@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Config;
 use App\Http\Controllers\Controller;
+use App\Models\Binnacle;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -43,6 +44,14 @@ class ApiController extends Controller
             if(in_array($response->getStatusCode(), [200, 201])) {
                 $body = $response->getBody();
                 $arr_body = json_decode($body);
+                //Record
+                $binnacle = new Binnacle;
+                $binnacle->action = 'encode';
+                $binnacle->method = 'post';
+                $binnacle->original_url = $long_url;
+                $binnacle->bitly_url = $arr_body->link;
+                $binnacle->save();
+                //
                 return response()->json([
                     'message' => "Short url: ".$arr_body->link
                 ], 200);
@@ -79,6 +88,14 @@ class ApiController extends Controller
             if(in_array($response->getStatusCode(), [200, 201])) {
                 $body = $response->getBody();
                 $arr_body = json_decode($body);
+                //Record
+                $binnacle = new Binnacle;
+                $binnacle->action = 'decode';
+                $binnacle->method = 'get';
+                $binnacle->original_url = $arr_body->long_url;
+                $binnacle->bitly_url = $short_url;
+                $binnacle->save();
+                //
                 return response()->json([
                     'message' => "Original url: ".$arr_body->long_url
                 ], 200);
@@ -94,5 +111,4 @@ class ApiController extends Controller
             ], 404);
         }
     }
-
 }
