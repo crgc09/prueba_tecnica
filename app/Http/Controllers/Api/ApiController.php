@@ -47,10 +47,52 @@ class ApiController extends Controller
                     'message' => "Short url: ".$arr_body->link
                 ], 200);
             }
+            else{
+               return response()->json([
+                    'message' => 'Internal error'
+                ], 500); 
+            }
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()
             ], 404);
         }
     }
+    // BITLY SHORTCODE TO URL
+    public function shortcodeToUrl(Request $request){
+        //Vars
+        $short_url = $request->url;
+        $parse_url = parse_url($short_url);
+        $domain = $parse_url['host'].$parse_url['path'];
+        $url = 'https://api-ssl.bitly.com/v4/bitlinks/'.$domain;
+        $token =  config('services.bitly.token');
+        $headers = [
+            'Authorization' => 'Bearer '.$token,
+            'Content-Type' => 'application/json'
+        ];
+        //
+        try {
+            //Http client
+            $client = new \GuzzleHttp\Client;
+            $response = $client->get($url, ['headers' => $headers,]);
+            //Search and json-decodification 
+            if(in_array($response->getStatusCode(), [200, 201])) {
+                $body = $response->getBody();
+                $arr_body = json_decode($body);
+                return response()->json([
+                    'message' => "Original url: ".$arr_body->long_url
+                ], 200);
+            }
+            else{
+               return response()->json([
+                    'message' => 'Internal error'
+                ], 500); 
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 404);
+        }
+    }
+
 }

@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 */
 Route::get('/', [ApiController::class, 'index']);
+Route::get('shortcode-to-url/{url}', [ApiController::class, 'shortcodeToUrl']);
 Route::post('url-to-shortcode', [ApiController::class, 'urlToShortcode']);
