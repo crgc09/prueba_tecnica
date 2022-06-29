@@ -47,4 +47,26 @@
 	http://localhost:8000/api/shortcode-to-url?url=https://bit.ly/3QTU1vl
 	url param example = https://bit.ly/3QTU1vl
 
+> Postman test index
+ 
+<p align="center">
+	<img src="./public/postman1.PNG" width="100%" />
+</p>
 
+> Postman test encode
+
+<p align="center">
+	<img src="./public/postman2.PNG" width="100%" />
+</p>
+
+> Postman test decode
+
+<p align="center">
+	<img src="./public/postman3.PNG" width="100%" />
+</p>
+
+> Binnacle table
+
+<p align="center">
+	<img src="./public/db.PNG" width="100%" />
+</p>
